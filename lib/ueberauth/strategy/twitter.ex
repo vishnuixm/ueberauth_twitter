@@ -26,7 +26,7 @@ defmodule Ueberauth.Strategy.Twitter do
   Handles the callback from Twitter.
   """
   def handle_callback!(%Plug.Conn{params: %{"oauth_verifier" => oauth_verifier}} = conn) do
-    token = get_session(conn, :twitter_token)
+    token = conn |> fetch_session |> get_session(:twitter_token)
     case Twitter.OAuth.access_token(token, oauth_verifier) do
       {:ok, access_token} -> fetch_user(conn, access_token)
       {:error, error} -> set_errors!(conn, [error(error.code, error.reason)])
@@ -90,7 +90,7 @@ defmodule Ueberauth.Strategy.Twitter do
   Stores the raw information (including the token) obtained from the twitter callback.
   """
   def extra(conn) do
-    {token, _secret} = get_session(conn, :twitter_token)
+    {token, _secret} = conn |> fetch_session |> get_session(:twitter_token)
 
     %Extra{
       raw_info: %{
