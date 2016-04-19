@@ -11,7 +11,7 @@ defmodule Ueberauth.Strategy.Twitter.OAuth do
   """
 
   @defaults [access_token: "/oauth/access_token",
-             authorize_url: "/oauth/authorize",
+             authorize_url: "/oauth/authenticate",
              request_token: "/oauth/request_token",
              site: "https://api.twitter.com"]
 
