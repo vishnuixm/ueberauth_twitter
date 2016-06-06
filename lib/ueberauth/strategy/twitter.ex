@@ -14,7 +14,8 @@ defmodule Ueberauth.Strategy.Twitter do
   Handles initial request for Twitter authentication.
   """
   def handle_request!(conn) do
-    token = Twitter.OAuth.request_token!([], [redirect_uri: callback_url(conn)])
+    state = conn.params["state"]
+    token = Twitter.OAuth.request_token!([], [redirect_uri: callback_url(conn, [state: state])])
 
     conn
     |> fetch_session
